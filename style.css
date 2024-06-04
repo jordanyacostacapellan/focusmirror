@@ -1,0 +1,44 @@
+body {
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.container {
+    text-align: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#video-container {
+    width: 400px; /* Adjust as needed */
+    height: 300px; /* Adjust as needed */
+    margin: 20px auto;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+}
+
+#timer {
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: #ddd;
+    cursor: default;
+}
