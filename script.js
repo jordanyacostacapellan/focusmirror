@@ -32,17 +32,36 @@ async function getWebcam() {
         startButton.disabled = true;
         pauseButton.disabled = false;
         stopButton.disabled = false;
-
-        placeholderImage.style.display = 'none'; // Hide the placeholder image
-        startTimer(); // Start timer immediately
+        // Start timer immediately when camera turns on
+        startTimer(); 
     } catch (error) {
         console.error('Error accessing webcam:', error);
-        if (error.name === 'NotAllowedError') {
+        if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
             alert('Please allow camera access to use FocusMirror.');
-        } else {
+        } else if (error.name === "NotFoundError" || error.name === "DevicesNotFoundError") {
+          alert("No camera found. Please make sure you have a camera connected.");
+        }
+        else {
             alert('An error occurred while accessing the webcam.');
         }
     }
+}
+
+// Function to start the timer
+function startTimer() {
+  if (!isTimerRunning) {
+    intervalId = setInterval(() => {
+      seconds++;
+      updateTimerDisplay();
+    }, 1000); // Update timer every second
+    isTimerRunning = true;
+  }
+}
+
+// Function to pause the timer
+function pauseTimer() {
+  clearInterval(intervalId);
+  isTimerRunning = false;
 }
 
 // Function to stop the session and camera
@@ -93,7 +112,6 @@ pauseButton.addEventListener('click', () => {
 });
 
 stopButton.addEventListener('click', stopTimer);
-
 
 // Start the timer when the webcam is turned on
 videoContainer.addEventListener('play', startTimer);

@@ -24,16 +24,22 @@ body {
     display: flex; /* Enable flexbox for alignment */
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
+    overflow: hidden; /* Hide overflow for proper sizing */
 }
 
-#video-container video, 
-#placeholderImage { /* Style both video and placeholder image */
-    max-width: 100%; /* Make them responsive to the container */
-    height: auto;  
-    display: block; /* Prevent extra space below */
+#video-container img, #video-container video {
+    width: 100%; /* Make them responsive to the container */
+    height: 100%;  
+    object-fit: cover; /* Maintain aspect ratio while covering the area */
 }
 
 /* Center the buttons */
+.button-container {
+    display: flex;
+    justify-content: space-around; 
+    width: 400px; 
+    margin: 20px auto; 
+}
 button {
     padding: 10px 20px;
     margin: 5px;
@@ -42,13 +48,6 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.button-container {
-    display: flex;
-    justify-content: space-around; 
-    width: 400px; 
-    margin: 20px auto; 
 }
 
 button:disabled {
@@ -60,4 +59,3 @@ button:disabled {
     font-size: 24px;
     margin-top: 20px;
 }
-
