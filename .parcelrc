@@ -4,4 +4,3 @@
     "*.js": ["@parcel/transformer-js"]
   }
 }
-
