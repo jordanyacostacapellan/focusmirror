@@ -16,19 +16,21 @@ body {
 }
 
 #video-container {
-    width: 400px;
-    height: 300px; 
+    width: 400px; /* Adjust as needed */
+    height: 300px; /* Adjust as needed */
     margin: 20px auto;  
     border: 2px solid #ddd;
     border-radius: 5px;
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
+    display: flex; /* Enable flexbox for alignment */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
 }
 
-#video-container video {
-    max-width: 100%; 
+#video-container video, 
+#placeholderImage { /* Style both video and placeholder image */
+    max-width: 100%; /* Make them responsive to the container */
     height: auto;  
+    display: block; /* Prevent extra space below */
 }
 
 /* Center the buttons */

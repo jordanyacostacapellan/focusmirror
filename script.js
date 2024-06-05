@@ -4,6 +4,7 @@ const startButton = document.getElementById('startButton');
 const pauseButton = document.getElementById('pauseButton');
 const stopButton = document.getElementById('stopButton');
 const timerElement = document.getElementById('timer');
+const placeholderImage = document.getElementById('placeholderImage');
 
 // Video stream variable
 let stream;
@@ -19,6 +20,7 @@ async function getWebcam() {
     if (isCameraOn) {
         return; 
     }
+
     try {
         stream = await navigator.mediaDevices.getUserMedia({ video: true });
         const video = document.createElement('video');
@@ -30,6 +32,8 @@ async function getWebcam() {
         startButton.disabled = true;
         pauseButton.disabled = false;
         stopButton.disabled = false;
+
+        placeholderImage.style.display = 'none'; // Hide the placeholder image
         startTimer(); // Start timer immediately
     } catch (error) {
         console.error('Error accessing webcam:', error);
@@ -41,39 +45,30 @@ async function getWebcam() {
     }
 }
 
-function startTimer() {
-  if (!isTimerRunning) {
-    intervalId = setInterval(() => {
-      seconds++;
-      updateTimerDisplay();
-    }, 1000); 
-    isTimerRunning = true;
-  }
-}
-
-function pauseTimer() {
-  clearInterval(intervalId);
-  isTimerRunning = false;
-}
-
+// Function to stop the session and camera
 function stopTimer() {
     if (stream) {
         const tracks = stream.getTracks();
         tracks.forEach(track => track.stop());
-        videoContainer.innerHTML = ''; 
+        videoContainer.innerHTML = ''; // Remove the video element
     }
-  
+    
     clearInterval(intervalId);
     seconds = 0;
     updateTimerDisplay();
     isTimerRunning = false;
     isCameraOn = false;
+    
+    // Reset button states
     startButton.disabled = false;
     pauseButton.disabled = true;
     pauseButton.textContent = "Pause Session"; 
     stopButton.disabled = true;
+
+    placeholderImage.style.display = 'block'; // Show the placeholder image
 }
 
+// Function to update timer display
 function updateTimerDisplay() {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -98,6 +93,7 @@ pauseButton.addEventListener('click', () => {
 });
 
 stopButton.addEventListener('click', stopTimer);
+
 
 // Start the timer when the webcam is turned on
 videoContainer.addEventListener('play', startTimer);
