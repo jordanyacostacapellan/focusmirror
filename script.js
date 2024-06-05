@@ -18,11 +18,11 @@ let isTimerRunning = false;
 
 // Load face-api.js models
 Promise.all([
-    faceapi.nets.tinyFaceDetector.loadFromUri('./models'), // Corrected path to './models'
-    faceapi.nets.faceLandmark68Net.loadFromUri('./models')  // Corrected path to './models'
+    faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+    faceapi.nets.faceLandmark68Net.loadFromUri('/models')
 ]).then(startVideo);
 
-async function startVideo() {
+async function startVideo() { 
     // Check for an existing video element (in case of pause/resume)
     const existingVideo = videoContainer.querySelector('video');
     if (existingVideo) {
@@ -51,7 +51,7 @@ async function getWebcam() {
         pauseButton.disabled = false;
         stopButton.disabled = false;
         // Start timer immediately when camera turns on
-        startTimer();
+        startTimer(); 
 
         // Hide the placeholder image
         placeholderImage.style.display = 'none';
@@ -60,7 +60,7 @@ async function getWebcam() {
         videoContainer.style.justifyContent = 'center';
         videoContainer.style.alignItems = 'center';
         videoContainer.style.width = '400px'; 
-
+        
         // Start face detection loop
         detectFaces();
 
@@ -150,7 +150,6 @@ function updateTimerDisplay() {
     timerElement.textContent = `${pad(hours)}:${pad(minutes)}:${pad(secs)}`;
 }
 
-
 function pad(num) {
     return (num < 10 ? "0" : "") + num;
 }
@@ -168,11 +167,9 @@ pauseButton.addEventListener('click', () => {
 
 stopButton.addEventListener('click', stopTimer);
 
-
 // Start the timer when the webcam is turned on
 videoContainer.addEventListener('play', startTimer);
 videoContainer.addEventListener('pause', pauseTimer);
-
 
 // Event listener for start button
 startButton.addEventListener('click', getWebcam);
