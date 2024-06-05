@@ -24,7 +24,6 @@ body {
     display: flex; /* Enable flexbox for alignment */
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
-    overflow: hidden; /* Hide overflow for proper sizing */
 }
 
 #video-container img, #video-container video {

@@ -34,6 +34,14 @@ async function getWebcam() {
         stopButton.disabled = false;
         // Start timer immediately when camera turns on
         startTimer(); 
+
+        // Hide the placeholder image
+        placeholderImage.style.display = 'none';
+
+        // Update container to fill the space
+        videoContainer.style.justifyContent = 'center';
+        videoContainer.style.alignItems = 'center';
+        videoContainer.style.width = '400px'; // Reset width if it was changed
     } catch (error) {
         console.error('Error accessing webcam:', error);
         if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
@@ -69,7 +77,6 @@ function stopTimer() {
     if (stream) {
         const tracks = stream.getTracks();
         tracks.forEach(track => track.stop());
-        videoContainer.innerHTML = ''; // Remove the video element
     }
     
     clearInterval(intervalId);
@@ -84,7 +91,9 @@ function stopTimer() {
     pauseButton.textContent = "Pause Session"; 
     stopButton.disabled = true;
 
-    placeholderImage.style.display = 'block'; // Show the placeholder image
+    // Clear video container and show placeholder
+    videoContainer.innerHTML = '';
+    placeholderImage.style.display = 'block'; 
 }
 
 // Function to update timer display
@@ -112,6 +121,7 @@ pauseButton.addEventListener('click', () => {
 });
 
 stopButton.addEventListener('click', stopTimer);
+
 
 // Start the timer when the webcam is turned on
 videoContainer.addEventListener('play', startTimer);
