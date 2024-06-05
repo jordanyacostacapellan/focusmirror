@@ -123,6 +123,7 @@ pauseButton.addEventListener('click', () => {
 
 stopButton.addEventListener('click', stopTimer);
 
+
 // Start the timer when the webcam is turned on
 videoContainer.addEventListener('play', startTimer);
 videoContainer.addEventListener('pause', pauseTimer);
