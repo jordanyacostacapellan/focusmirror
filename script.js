@@ -29,8 +29,11 @@ async function getWebcam() {
     stopButton.disabled = false;
   } catch (error) {
     console.error('Error accessing webcam:', error);
-    // Additional error handling (e.g., display a message to the user)
-    alert("Please allow webcam access for FocusMirror to function properly.");
+    if (error.name === 'NotAllowedError') {
+      alert('Please allow camera access to use FocusMirror.');
+    } else {
+      alert('An error occurred while accessing the webcam.');
+    }
   }
 }
 
