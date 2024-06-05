@@ -6,14 +6,32 @@ const stopButton = document.getElementById('stopButton');
 const timerElement = document.getElementById('timer');
 const placeholderImage = document.getElementById('placeholderImage');
 
-// Video stream variable
+// Video stream and face detection variables
 let stream;
 let isCameraOn = false; 
+let faceDetections = [];
 
 // Timer variables
 let intervalId;
 let seconds = 0;
 let isTimerRunning = false;
+
+// Load face-api.js models
+Promise.all([
+    faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+    faceapi.nets.faceLandmark68Net.loadFromUri('/models')
+]).then(startVideo);
+
+async function startVideo() { 
+    // Check for an existing video element (in case of pause/resume)
+    const existingVideo = videoContainer.querySelector('video');
+    if (existingVideo) {
+        existingVideo.play();
+        return; 
+    }
+
+    getWebcam();
+}
 
 // Function to get webcam access
 async function getWebcam() {
@@ -32,6 +50,7 @@ async function getWebcam() {
         startButton.disabled = true;
         pauseButton.disabled = false;
         stopButton.disabled = false;
+        
         // Start timer immediately when camera turns on
         startTimer(); 
 
@@ -42,12 +61,16 @@ async function getWebcam() {
         videoContainer.style.justifyContent = 'center';
         videoContainer.style.alignItems = 'center';
         videoContainer.style.width = '400px'; 
+        
+        // Start face detection loop
+        detectFaces();
+
     } catch (error) {
         console.error('Error accessing webcam:', error);
         if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
             alert('Please allow camera access to use FocusMirror.');
         } else if (error.name === "NotFoundError" || error.name === "DevicesNotFoundError") {
-          alert("No camera found. Please make sure you have a camera connected.");
+           alert("No camera found. Please make sure you have a camera connected.");
         }
         else {
             alert('An error occurred while accessing the webcam.');
@@ -55,21 +78,42 @@ async function getWebcam() {
     }
 }
 
+// Function to detect faces
+async function detectFaces() {
+    const videoEl = document.querySelector("#video-container video"); 
+
+    // options for face detection
+    const options = new faceapi.TinyFaceDetectorOptions();
+
+    // main loop
+    while (isCameraOn) {
+        faceDetections = await faceapi.detectAllFaces(videoEl, options).withFaceLandmarks(); 
+        console.log("Face detections:", faceDetections); // Add this line for debugging
+
+        // You can now process the 'faceDetections' array, which contains 
+        // information about the detected faces and their landmarks.
+
+        // (Add code to send the faceDetections data to your emotion detection API here.)
+
+        await new Promise(resolve => setTimeout(resolve, 100)); // Wait a bit before next iteration
+    }
+}
+
 // Function to start the timer
 function startTimer() {
-  if (!isTimerRunning) {
-    intervalId = setInterval(() => {
-      seconds++;
-      updateTimerDisplay();
-    }, 1000); // Update timer every second
-    isTimerRunning = true;
-  }
+    if (!isTimerRunning) {
+        intervalId = setInterval(() => {
+            seconds++;
+            updateTimerDisplay();
+        }, 1000); // Update timer every second
+        isTimerRunning = true;
+    }
 }
 
 // Function to pause the timer
 function pauseTimer() {
-  clearInterval(intervalId);
-  isTimerRunning = false;
+    clearInterval(intervalId);
+    isTimerRunning = false;
 }
 
 // Function to stop the session and camera
@@ -79,7 +123,7 @@ function stopTimer() {
         tracks.forEach(track => track.stop());
         stream = null;
     }
-    
+
     clearInterval(intervalId);
     seconds = 0;
     updateTimerDisplay();
@@ -89,17 +133,17 @@ function stopTimer() {
     // Reset button states
     startButton.disabled = false;
     pauseButton.disabled = true;
-    pauseButton.textContent = "Pause Session"; 
+    pauseButton.textContent = "Pause Session";
     stopButton.disabled = true;
 
     // Remove the video element only, not the container.
     const videoElement = videoContainer.querySelector('video');
-    if(videoElement) {
+    if (videoElement) {
         videoContainer.removeChild(videoElement);
     }
 
     // Show the placeholder image
-    placeholderImage.style.display = 'block'; 
+    placeholderImage.style.display = 'block';
 }
 
 // Function to update timer display
@@ -112,18 +156,18 @@ function updateTimerDisplay() {
 
 
 function pad(num) {
-  return (num < 10 ? "0" : "") + num;
+    return (num < 10 ? "0" : "") + num;
 }
 
 // Event listeners for pause and stop buttons
 pauseButton.addEventListener('click', () => {
-  if (isTimerRunning) {
-    pauseTimer();
-    pauseButton.textContent = "Resume Session";
-  } else {
-    startTimer();
-    pauseButton.textContent = "Pause Session";
-  }
+    if (isTimerRunning) {
+        pauseTimer();
+        pauseButton.textContent = "Resume Session";
+    } else {
+        startTimer();
+        pauseButton.textContent = "Pause Session";
+    }
 });
 
 stopButton.addEventListener('click', stopTimer);
