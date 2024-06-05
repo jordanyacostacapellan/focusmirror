@@ -77,13 +77,9 @@ function stopTimer() {
     if (stream) {
         const tracks = stream.getTracks();
         tracks.forEach(track => track.stop());
+        stream = null;
     }
-
-    // Clear video container and show placeholder
-    videoContainer.innerHTML = ''; // Remove any existing video element
-    placeholderImage.style.display = 'block'; // Show the placeholder image
-
-    // Reset timer variables
+    
     clearInterval(intervalId);
     seconds = 0;
     updateTimerDisplay();
@@ -95,6 +91,15 @@ function stopTimer() {
     pauseButton.disabled = true;
     pauseButton.textContent = "Pause Session"; 
     stopButton.disabled = true;
+
+    // Remove the video element only, not the container.
+    const videoElement = videoContainer.querySelector('video');
+    if(videoElement) {
+        videoContainer.removeChild(videoElement);
+    }
+
+    // Show the placeholder image
+    placeholderImage.style.display = 'block'; 
 }
 
 // Function to update timer display
