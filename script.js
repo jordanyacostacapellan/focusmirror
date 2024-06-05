@@ -16,7 +16,7 @@ let intervalId;
 let seconds = 0;
 let isTimerRunning = false;
 
-// Load face-api.js models
+// Load face-api.js models (using Promises)
 Promise.all([
     faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
     faceapi.nets.faceLandmark68Net.loadFromUri('/models')
