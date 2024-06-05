@@ -16,25 +16,37 @@ body {
 }
 
 #video-container {
-    width: 400px; /* Adjust as needed */
-    height: 300px; /* Adjust as needed */
+    width: 400px;
+    height: 300px; 
     margin: 20px auto;  
     border: 2px solid #ddd;
     border-radius: 5px;
-    display: flex; /* Enable flexbox for alignment */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
 }
 
 #video-container video {
-    max-width: 100%; /* Make the video responsive to the container */
+    max-width: 100%; 
     height: auto;  
 }
 
 /* Center the buttons */
 button {
-    display: block;
-    margin: 10px auto;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-around; 
+    width: 400px; 
+    margin: 20px auto; 
 }
 
 button:disabled {
@@ -46,3 +58,4 @@ button:disabled {
     font-size: 24px;
     margin-top: 20px;
 }
+
