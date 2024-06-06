@@ -47,7 +47,7 @@ async function getWebcam() {
         if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
             alert('Please allow camera access to use FocusMirror.');
         } else if (error.name === "NotFoundError" || error.name === "DevicesNotFoundError") {
-           alert("No camera found. Please make sure you have a camera connected.");
+          alert("No camera found. Please make sure you have a camera connected.");
         }
         else {
             alert('An error occurred while accessing the webcam.');
@@ -57,19 +57,19 @@ async function getWebcam() {
 
 // Function to start the timer
 function startTimer() {
-    if (!isTimerRunning) {
-        intervalId = setInterval(() => {
-            seconds++;
-            updateTimerDisplay();
-        }, 1000); // Update timer every second
-        isTimerRunning = true;
-    }
+  if (!isTimerRunning) {
+    intervalId = setInterval(() => {
+      seconds++;
+      updateTimerDisplay();
+    }, 1000); // Update timer every second
+    isTimerRunning = true;
+  }
 }
 
 // Function to pause the timer
 function pauseTimer() {
-    clearInterval(intervalId);
-    isTimerRunning = false;
+  clearInterval(intervalId);
+  isTimerRunning = false;
 }
 
 // Function to stop the session and camera
@@ -79,7 +79,7 @@ function stopTimer() {
         tracks.forEach(track => track.stop());
         stream = null;
     }
-
+    
     clearInterval(intervalId);
     seconds = 0;
     updateTimerDisplay();
@@ -89,17 +89,17 @@ function stopTimer() {
     // Reset button states
     startButton.disabled = false;
     pauseButton.disabled = true;
-    pauseButton.textContent = "Pause Session";
+    pauseButton.textContent = "Pause Session"; 
     stopButton.disabled = true;
 
     // Remove the video element only, not the container.
     const videoElement = videoContainer.querySelector('video');
-    if (videoElement) {
+    if(videoElement) {
         videoContainer.removeChild(videoElement);
     }
 
     // Show the placeholder image
-    placeholderImage.style.display = 'block';
+    placeholderImage.style.display = 'block'; 
 }
 
 // Function to update timer display
@@ -110,26 +110,29 @@ function updateTimerDisplay() {
     timerElement.textContent = `${pad(hours)}:${pad(minutes)}:${pad(secs)}`;
 }
 
+
 function pad(num) {
-    return (num < 10 ? "0" : "") + num;
+  return (num < 10 ? "0" : "") + num;
 }
 
 // Event listeners for pause and stop buttons
 pauseButton.addEventListener('click', () => {
-    if (isTimerRunning) {
-        pauseTimer();
-        pauseButton.textContent = "Resume Session";
-    } else {
-        startTimer();
-        pauseButton.textContent = "Pause Session";
-    }
+  if (isTimerRunning) {
+    pauseTimer();
+    pauseButton.textContent = "Resume Session";
+  } else {
+    startTimer();
+    pauseButton.textContent = "Pause Session";
+  }
 });
 
 stopButton.addEventListener('click', stopTimer);
 
+
 // Start the timer when the webcam is turned on
 videoContainer.addEventListener('play', startTimer);
 videoContainer.addEventListener('pause', pauseTimer);
+
 
 // Event listener for start button
 startButton.addEventListener('click', getWebcam);
