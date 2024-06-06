@@ -1,3 +1,5 @@
+import * as faceapi from 'face-api.js';
+
 // Get references to the video container, buttons, and timer
 const videoContainer = document.getElementById('video-container');
 const startButton = document.getElementById('startButton');
@@ -16,7 +18,7 @@ let intervalId;
 let seconds = 0;
 let isTimerRunning = false;
 
-// Load face-api.js models (using Promises)
+// Load face-api.js models
 Promise.all([
     faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
     faceapi.nets.faceLandmark68Net.loadFromUri('/models')
@@ -95,6 +97,7 @@ async function detectFaces() {
     }
 }
 
+
 // Function to start the timer
 function startTimer() {
     if (!isTimerRunning) {
@@ -167,9 +170,11 @@ pauseButton.addEventListener('click', () => {
 
 stopButton.addEventListener('click', stopTimer);
 
+
 // Start the timer when the webcam is turned on
 videoContainer.addEventListener('play', startTimer);
 videoContainer.addEventListener('pause', pauseTimer);
+
 
 // Event listener for start button
 startButton.addEventListener('click', getWebcam);
